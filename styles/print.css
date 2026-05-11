@@ -1,0 +1,95 @@
+/*
+ * Print stylesheet for PunkFlow web.
+ *
+ * Goals:
+ *   - Transcripts, credits, and manifesto pages print legibly
+ *   - Player and interactive controls hidden in print
+ *   - Black on white, generous margins, readable type
+ *
+ * Imported in app/globals.css via @import "../styles/print.css";
+ * or referenced directly in the root layout.
+ */
+
+@media print {
+  /* Page setup */
+  @page {
+    margin: 1in;
+    size: letter;
+  }
+
+  /* Reset to readable defaults */
+  html, body {
+    background: white !important;
+    color: black !important;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 11pt;
+    line-height: 1.5;
+  }
+
+  /* Hide non-printable elements */
+  header.site-header,
+  footer.site-footer,
+  nav,
+  .episode-player,
+  .player-controls,
+  .interactive-only,
+  button,
+  .no-print {
+    display: none !important;
+  }
+
+  /* Links: show URLs */
+  a {
+    color: black !important;
+    text-decoration: underline;
+  }
+
+  a[href]:not([href^="#"])::after {
+    content: " (" attr(href) ")";
+    font-size: 9pt;
+    color: #444;
+  }
+
+  /* Headings */
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    color: black !important;
+  }
+
+  h1 { font-size: 20pt; }
+  h2 { font-size: 16pt; }
+  h3 { font-size: 13pt; }
+
+  /* Block elements: keep together where possible */
+  p, blockquote, pre, table, figure {
+    page-break-inside: avoid;
+  }
+
+  /* Transcript styling */
+  .transcript-segment {
+    margin-bottom: 0.5em;
+    page-break-inside: avoid;
+  }
+
+  .transcript-segment .speaker {
+    font-weight: bold;
+  }
+
+  .transcript-segment .timestamp {
+    color: #666;
+    font-size: 9pt;
+    font-family: ui-monospace, monospace;
+    margin-right: 0.5em;
+  }
+
+  /* Credits styling */
+  .credits-list {
+    column-count: 2;
+    column-gap: 0.5in;
+  }
+
+  .credits-role {
+    font-weight: bold;
+    margin-top: 0.5em;
+  }
+}

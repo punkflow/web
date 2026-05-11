@@ -67,6 +67,42 @@ Tracking meaningful changes to the punkflow.com codebase across sessions.
 
 ---
 
+## 2026-05-11 — First three page types rendering end-to-end
+
+**What changed:**
+- Cloudflare Stream provisioned (1,000-min storage tier, $5/month; $0 tier didn't actually allow uploads despite UI suggesting pay-as-you-go)
+- First test video uploaded; seeded `channels.simone-pixel` + `episodes.test-episode` rows via Supabase MCP, overriding `visibility=public` and `canon_status='pilot'` defaults to clear public-read RLS
+- Built `components/episode/EpisodePlayer.tsx` wrapping `@cloudflare/stream-react`, using `lib/stream/player.ts:buildPlayerConfig`
+- Built `app/[channel]/[episode]/page.tsx` with React `cache()` for query dedup + `generateMetadata` via `episodeMetadata()`
+- Built `app/[channel]/page.tsx` channel landing (responsive episode grid with `next/image`)
+- Built `app/page.tsx` studio landing replacing default Next welcome
+- Added `components/shared/SiteHeader.tsx` + `SiteFooter.tsx`, wired into root layout; replaced root metadata defaults
+- `next.config.ts`: allowed `*.cloudflarestream.com` in `images.remotePatterns`
+- Vercel account created (`jason@punkflow.com`, Hobby tier), project imported via punkflow GitHub install, env vars set (all except `SUPABASE_SERVICE_ROLE_KEY` and `CLOUDFLARE_STREAM_WEBHOOK_SECRET`)
+
+**Why:**
+- SCAFFOLD.md Phase 1 buildout steps 4–7 (episode → channel → studio)
+- Wishlist-sweep trigger (first `/[channel]/[episode]` rendered) reached, sweep deferred per "still too basic"
+
+**Decisions:**
+- Skipped `(site)` route group for now; revisit when `/about` and `/manifesto` land and shared layout scoping becomes useful
+- Skipped richer episode page sections (transcript / credits / copublishers / production tools) — supporting tables empty; revisit when seed data exists
+- New Vercel account instead of folding into existing rebootexperts-tied account; matches studio-vs-personal separation across Cloudflare, GitHub, Supabase
+- Hobby tier for Vercel; Pro upgrade deferred until monetization actually launches (a year+ out)
+
+**External infrastructure state:**
+- Cloudflare Account ID: `1b0fab96439be5bd33729916e18cb381`
+- Test video UID: `2a3289463ea6acba8830e51b419c6560` (45s, 1920×1080)
+- Vercel project: `web` under Jason Rundle's Vercel account
+
+**Pending for next session:**
+- `SUPABASE_SERVICE_ROLE_KEY` and `CLOUDFLARE_STREAM_WEBHOOK_SECRET` to be added to Vercel env once Stream webhook is registered against deployed URL
+- DNS pointing `punkflow.com` → Vercel
+- Wishlist sweep against rendered pages
+- Channel/studio metadata fields (`tagline`, `description`, `avatar_url`, `banner_url`) still null for `simone-pixel`; content decision deferred to Jason
+
+---
+
 ## Template for future entries
 
 ```
